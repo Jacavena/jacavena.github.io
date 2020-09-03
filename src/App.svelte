@@ -4,32 +4,14 @@
 	let repos = [];
 
 	onMount(async () => {
-		const apiKey = '5c0031db45540faf979d3d0b9c46d24a13d903ec'; // Access Public Repositories API Key
-		const query = `{
-			viewer {
-				repositories(first: 25, orderBy: {direction: DESC, field: CREATED_AT}) {
-					nodes {
-						name
-						description
-						url
-					}
-				}
-			}
-		}`;
 
-		const res = await fetch('https://api.github.com/graphql', {
-			method: 'POST',
+		const res = await fetch('https://api.github.com/users/jacavena/repos', {
 			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Authorization': 'bearer ' + apiKey
-			},
-			body: JSON.stringify({ query })
+				'Accept': 'application/vnd.github.v3+json'
+			}
 		})
 
-		const data = await res.json();
-		repos = data.data.viewer.repositories.nodes;
-		console.log(repos);
+		repos = await res.json();
 	});
 </script>
 
