@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n\timport { onMount } from 'svelte';\n\n\tlet repos = [];\n\n\tonMount(async () => {\n\t\tconst apiKey = '1231bd41fe7c993085126219a6c4a129af1eb05a';\n\t\tconst query = `{\n\t\t\tviewer {\n\t\t\t\trepositories(first: 25, orderBy: {direction: DESC, field: CREATED_AT}) {\n\t\t\t\t\tnodes {\n\t\t\t\t\t\tname\n\t\t\t\t\t\tdescription\n\t\t\t\t\t\turl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}`;\n\n\t\tconst res = await fetch('https://api.github.com/graphql', {\n\t\t\tmethod: 'POST',\n\t\t\theaders: {\n\t\t\t\t'Content-Type': 'application/json',\n\t\t\t\t'Accept': 'application/json',\n\t\t\t\t'Authorization': 'Bearer ' + apiKey\n\t\t\t},\n\t\t\tbody: JSON.stringify({ query })\n\t\t})\n\n\t\tconst data = await res.json();\n\t\trepos = data.data.viewer.repositories.nodes;\n\t\tconsole.log(repos);\n\t});\n</script>\n\n<main>\n\t{#each repos as repo}\n\t\t<div>\n\t\t\t<h2><a href={repo.url}>{repo.name}</a></h2>\n\t\t\t<h3>{repo.description}</h3>\n\t\t</div>\n\t{:else}\n\t\t<p>Loading repositories...</p>\n\t{/each}\n</main>\n\n<style>\n\tmain {\n\t\ttext-align: center;\n\t\tpadding: 1em;\n\t\tmax-width: 240px;\n\t\tmargin: 0 auto;\n\t}\n\n\th1 {\n\t\tcolor: #ff3e00;\n\t\ttext-transform: uppercase;\n\t\tfont-size: 4em;\n\t\tfont-weight: 100;\n\t}\n\n\t@media (min-width: 640px) {\n\t\tmain {\n\t\t\tmax-width: none;\n\t\t}\n\t}\n</style>"
+  ],
+  "names": [],
+  "mappings": "AA+CC,IAAI,eAAC,CAAC,AACL,UAAU,CAAE,MAAM,CAClB,OAAO,CAAE,GAAG,CACZ,SAAS,CAAE,KAAK,CAChB,MAAM,CAAE,CAAC,CAAC,IAAI,AACf,CAAC,AASD,MAAM,AAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AAC1B,IAAI,eAAC,CAAC,AACL,SAAS,CAAE,IAAI,AAChB,CAAC,AACF,CAAC"
+}
